@@ -191,7 +191,8 @@ namespace Globalization {
                     eras.Add(GetEraInfo(culture, eraNum));
                 }
             }
-            return eras == null ? null : eras.ToArray();
+            // Eras need to be sorted in descending order because of the nature of the Era selection algorithm in Globalize v0.1.1.
+            return eras == null ? null : eras.OrderByDescending(x => x.start == null ? long.MinValue : x.start).ToArray();
         }
 
         private static GlobalizationInfo.DateFormatInfo.EraInfo GetEraInfo(CultureInfo culture, int eraNum) {
@@ -214,20 +215,24 @@ namespace Globalization {
                     era.offset = -543;
                 }
                 else if (type == typeof(JapaneseCalendar)) {
-                    switch (eraNum) {
-                        case 1:
-                            era.start = 0xdf9984200L;
+                    switch (era.name) {
+                        case "令和": // Reiwa
+                            era.start = 1556668800000L;
+                            era.offset = 0x7e2;
+                            break;
+                        case "平成": // Heisei
+                            era.start = 600220800000;
                             era.offset = 0x7c4;
                             break;
-                        case 2:
+                        case "昭和": // Showa
                             era.start = -1357603200000L;
                             era.offset = 0x785;
                             break;
-                        case 3:
+                        case "大正": // Taisho
                             era.start = -1812153600000L;
                             era.offset = 0x777;
                             break;
-                        case 4:
+                        case "明治": // Meiji
                             era.start = null;
                             era.offset = 0x74b;
                             break;
