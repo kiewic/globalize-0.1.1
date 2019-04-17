@@ -5,6 +5,14 @@ Fixes applied on top of Globalize 0.1.1:
 1. In the *generator*, fix mismatching Japanese era start dates and offsets by using era names instead of Japanese index number.
 2. In the *generator*, order eras in descending order using start date, and leaving `null` start dates till the end. Otherwise, Globalize could pick a wrong era, since the first era that has a smaller start date than the date being formatted is selected.
 
+# Steps to build a minified version
+
+```
+npm install -g grunt-cli
+npm install
+grunt.cmd min
+```
+
 # Globalize
 
 A JavaScript library for globalization and localization. Enables complex
